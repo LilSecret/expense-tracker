@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Expense Tracker</title>
+    <meta name="description" content="expense tracker to track your expenses" />
+    <link rel="stylesheet" href="./style.css" />
+    <!-- <meta> -->
+    <link rel="stylesheet" href="" />
+  </head>
+  <body>
+    <header>
+      <h1>Balance: <span class="balance-amount">265</span>$</h1>
+    </header>
+
+    <main>
+      <section class="new-expense">
+        <form class="new-expense-form | main-inline-mw">
+          <label for="list-type">
+            <select name="list-type" id="list-type">
+              <option selected disabled>Select Type</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </label>
+
+          <label for="description">
+            <input
+              type="text"
+              id="description"
+              name="description"
+              placeholder="description"
+            />
+          </label>
+
+          <label for="amount">
+            <input type="text" id="amount" name="amount" placeholder="amount" />
+          </label>
+
+          <button type="submit">Add</button>
+        </form>
+      </section>
+
+      <section>
+        <div class="container main-inline-mw">
+          <h3>Expense</h3>
+
+          <div class="wrapper">
+            <ul>
+              <li>
+                <h4>Grocery</h4>
+                <div><span>20</span>$</div>
+                <span>22/3/24</span>
+                <button class="remove-item-btn">Delete</button>
+              </li>
+            </ul>
+          </div>
+
+          <h4>Total <span class="expense-container-amount">65</span>$</h4>
+        </div>
+
+        <div class="container main-inline-mw">
+          <h3>Income</h3>
+
+          <div class="expenses-wrapper">
+            <ul>
+              <li>
+                <h4>Salary</h4>
+                <div><span>200</span>$</div>
+                <span>22/3/24</span>
+                <button class="remove-item-btn">Delete</button>
+              </li>
+            </ul>
+          </div>
+
+          <h4>Total <span class="expense-container-amount">200</span>$</h4>
+        </div>
+      </section>
+    </main>
+    <script src="./index.js" async defer></script>
+  </body>
+</html>
