@@ -66,6 +66,7 @@ h4 {
 
 .btn {
   display: flex;
+  align-items: center;
   gap: 8px;
   border-radius: 4px;
   background-color: var(--clr-primary-200);
@@ -78,6 +79,7 @@ h4 {
 
   &:hover,
   &:focus {
+    color: var(--clr-neutral-100);
     background-color: var(--clr-primary-400);
     transform: scale(1.1);
   }
@@ -94,6 +96,16 @@ h4 {
 .main-inline-mw {
   max-width: 1100px;
   margin-inline: auto;
+}
+
+.even-columns {
+  display: grid;
+  gap: 60px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.section {
+  margin-block: 50px;
 }
 
 .text-center {
