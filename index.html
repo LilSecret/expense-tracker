@@ -7,78 +7,118 @@
     <title>Expense Tracker</title>
     <meta name="description" content="expense tracker to track your expenses" />
     <link rel="stylesheet" href="./style.css" />
-    <!-- <meta> -->
-    <link rel="stylesheet" href="" />
+    <!-- <My Stylesheets> -->
+    <link rel="stylesheet" href="/css/general.css" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body>
-    <header>
-      <h1>Balance: <span class="balance-amount">265</span>$</h1>
+    <header class="section text-center">
+      <h1 class="heading">Balance: <span class="balance-amount">265</span>$</h1>
     </header>
 
     <main>
-      <section class="new-expense">
-        <form class="new-expense-form | main-inline-mw">
-          <label for="list-type">
-            <select name="list-type" id="list-type">
-              <option selected disabled>Select Type</option>
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
-            </select>
-          </label>
+      <section class="section">
+        <div class="main-inline-mw">
+          <h2 class="heading">Add Transaction</h2>
+          <form class="new-expense-form | flex-group">
+            <label for="list-type">
+              <select class="input" name="list-type" id="list-type">
+                <option selected disabled>Select Type</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+            </label>
 
-          <label for="description">
-            <input
-              type="text"
-              id="description"
-              name="description"
-              placeholder="description"
-            />
-          </label>
+            <label for="description">
+              <input
+                class="input"
+                type="text"
+                id="description"
+                name="description"
+                placeholder="Description"
+              />
+            </label>
 
-          <label for="amount">
-            <input type="text" id="amount" name="amount" placeholder="amount" />
-          </label>
+            <label for="amount">
+              <input
+                class="input"
+                type="text"
+                id="amount"
+                name="amount"
+                placeholder="Amount"
+              />
+            </label>
 
-          <button type="submit">Add</button>
-        </form>
+            <button class="btn" type="submit">
+              <i class="fa-regular fa-square-plus"></i>
+            </button>
+          </form>
+        </div>
       </section>
 
-      <section>
-        <div class="container main-inline-mw">
-          <h3>Expense</h3>
-
-          <div class="wrapper">
-            <ul>
-              <li>
-                <h4>Grocery</h4>
-                <div><span>20</span>$</div>
-                <span>22/3/24</span>
-                <button class="remove-item-btn">Delete</button>
-              </li>
-            </ul>
+      <section class="section">
+        <div class="even-columns main-inline-mw">
+          <div class="transaction-container">
+            <h3 class="transaction-heading heading">Expense</h3>
+            <div class="transaction-wrapper">
+              <ul>
+                <li class="transaction-item">
+                  <h4>Grocery</h4>
+                  <div class="transaction-item-right">
+                    <div><span>20</span>$</div>
+                    <span>22/3/24</span>
+                    <button class="remove-item-btn btn">
+                      <i class="fa-regular fa-trash-can"></i> Delete
+                    </button>
+                  </div>
+                </li>
+              </ul>
+              <h4 class="transaction-total">
+                Total <span class="expense-container-amount">65</span>$
+              </h4>
+            </div>
           </div>
-
-          <h4>Total <span class="expense-container-amount">65</span>$</h4>
-        </div>
-
-        <div class="container main-inline-mw">
-          <h3>Income</h3>
-
-          <div class="expenses-wrapper">
-            <ul>
-              <li>
-                <h4>Salary</h4>
-                <div><span>200</span>$</div>
-                <span>22/3/24</span>
-                <button class="remove-item-btn">Delete</button>
-              </li>
-            </ul>
+          <div class="transaction-container">
+            <h3 class="transaction-heading heading">Income</h3>
+            <div class="transaction-wrapper">
+              <ul>
+                <li class="transaction-item">
+                  <h4>Salary</h4>
+                  <div class="transaction-item-right">
+                    <div><span>200</span>$</div>
+                    <span>22/3/24</span>
+                    <button class="remove-item-btn btn">
+                      <i class="fa-regular fa-trash-can"></i> Delete
+                    </button>
+                  </div>
+                </li>
+                <li class="transaction-item">
+                  <h4>Salary</h4>
+                  <div class="transaction-item-right">
+                    <div><span>200</span>$</div>
+                    <span>22/3/24</span>
+                    <button class="remove-item-btn btn">
+                      <i class="fa-regular fa-trash-can"></i> Delete
+                    </button>
+                  </div>
+                </li>
+              </ul>
+              <h4 class="transaction-total">
+                Total <span class="expense-container-amount">200</span>$
+              </h4>
+            </div>
           </div>
-
-          <h4>Total <span class="expense-container-amount">200</span>$</h4>
         </div>
       </section>
     </main>
-    <script src="./index.js" async defer></script>
+    <script src="./index.js"></script>
   </body>
 </html>
