@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Expense Tracker</title>
     <meta name="description" content="expense tracker to track your expenses" />
-    <link rel="stylesheet" href="./style.css" />
     <!-- <My Stylesheets> -->
     <link rel="stylesheet" href="/css/general.css" />
     <link rel="stylesheet" href="/css/styles.css" />
@@ -21,7 +20,7 @@
   </head>
   <body>
     <header class="section text-center">
-      <h1 class="heading">Balance: <span class="balance-amount">265</span>$</h1>
+      <h1 class="heading">Balance: <span class="balance-total">0</span>$</h1>
     </header>
 
     <main>
@@ -31,9 +30,9 @@
           <form class="new-expense-form | flex-group">
             <label for="list-type">
               <select class="input" name="list-type" id="list-type">
-                <option selected disabled>Select Type</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
+                <option value="default" selected disabled>Select Type</option>
+                <option value="income-list">Income</option>
+                <option value="expense-list">Expense</option>
               </select>
             </label>
 
@@ -61,6 +60,7 @@
               <i class="fa-regular fa-square-plus"></i>
             </button>
           </form>
+          <span class="form-error-message">Fill out form correctly</span>
         </div>
       </section>
 
@@ -69,33 +69,35 @@
           <div class="transaction-container">
             <h3 class="transaction-heading heading">Expense</h3>
             <div class="transaction-wrapper">
-              <ul>
+              <ul class="expense-list">
                 <li class="transaction-item">
                   <h4>Grocery</h4>
                   <div class="transaction-item-right">
-                    <div><span>20</span>$</div>
+                    <div><span class="item-price">20</span>$</div>
                     <span>22/3/24</span>
-                    <button class="remove-item-btn btn">
+                    <button class="remove-transaction-btn btn">
                       <i class="fa-regular fa-trash-can"></i> Delete
                     </button>
                   </div>
                 </li>
               </ul>
+
               <h4 class="transaction-total">
-                Total <span class="expense-container-amount">65</span>$
+                Total <span class="expense-list-total total">0</span>$
               </h4>
             </div>
           </div>
+
           <div class="transaction-container">
             <h3 class="transaction-heading heading">Income</h3>
             <div class="transaction-wrapper">
-              <ul>
+              <ul class="income-list">
                 <li class="transaction-item">
                   <h4>Salary</h4>
                   <div class="transaction-item-right">
-                    <div><span>200</span>$</div>
+                    <div><span class="item-price">200</span>$</div>
                     <span>22/3/24</span>
-                    <button class="remove-item-btn btn">
+                    <button class="remove-transaction-btn btn">
                       <i class="fa-regular fa-trash-can"></i> Delete
                     </button>
                   </div>
@@ -103,16 +105,17 @@
                 <li class="transaction-item">
                   <h4>Salary</h4>
                   <div class="transaction-item-right">
-                    <div><span>200</span>$</div>
+                    <div><span class="item-price">200</span>$</div>
                     <span>22/3/24</span>
-                    <button class="remove-item-btn btn">
+                    <button class="remove-transaction-btn btn">
                       <i class="fa-regular fa-trash-can"></i> Delete
                     </button>
                   </div>
                 </li>
               </ul>
+
               <h4 class="transaction-total">
-                Total <span class="expense-container-amount">200</span>$
+                Total <span class="income-list-total total">0</span>$
               </h4>
             </div>
           </div>
