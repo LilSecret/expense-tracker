@@ -95,6 +95,7 @@ h4 {
 /* Utilities  */
 .main-inline-mw {
   max-width: 1100px;
+  padding-inline: 3rem;
   margin-inline: auto;
 }
 
