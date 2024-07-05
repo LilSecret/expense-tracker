@@ -3,6 +3,17 @@
   font-size: 22px;
 }
 
+.form-error-message {
+  display: none;
+  color: red;
+  transition: 300ms ease;
+  font-weight: bold;
+
+  & .active {
+    display: block;
+  }
+}
+
 .transaction-heading {
   text-align: center;
   border-top-right-radius: 6px;

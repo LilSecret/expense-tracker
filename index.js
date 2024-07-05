@@ -51,7 +51,8 @@ const minusTransactionAmount = (type, amount) => {
 };
 
 const deployItemInTransactionList = (type, description, amount) => {
-  const transactionList = type === "income" ? incomeList : expenseList;
+  console.log(type);
+  const transactionList = type === "income-list" ? incomeList : expenseList;
   const listItem = document.createElement("li");
 
   listItem.classList.add("transaction-item");
@@ -79,10 +80,10 @@ const getBalanceTotal = () => {
   return incomeTotal - expenseTotal;
 };
 
-const checkFormInputsError = () => {
-  const typeInputError = type === "Select Type";
-  const descriptionError = description.length < 4;
-  const amountError = amount <= 0;
+const checkFormInputsForError = () => {
+  const typeInputError = expenseFormType.value === "Select Type";
+  const descriptionError = expenseFormDescription.value.length < 4;
+  const amountError = Number(expenseFormAmount.value) <= 0;
 
   return typeInputError || descriptionError || amountError;
 };
@@ -118,11 +119,9 @@ newExpenseForm.addEventListener("submit", (e) => {
   const description = expenseFormDescription.value;
   const amount = Number(expenseFormAmount.value);
 
-  const isError = checkFormInputsError();
-
   e.preventDefault();
 
-  if (isError) {
+  if (checkFormInputsForError()) {
     alert("finish filling out new transaction form correctly");
     return;
   }
