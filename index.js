@@ -61,7 +61,7 @@ const deployItemInTransactionList = (type, description, amount) => {
     <div class="transaction-item-right">
     <div><span class='item-price'>${amount}</span>$</div>
     <span>22/3/24</span>
-    <button class="remove-item-btn btn">
+    <button class="remove-transaction-btn btn">
     <i class="fa-regular fa-trash-can"></i> Delete
     </button>
     </div>`;
@@ -81,7 +81,7 @@ const getBalanceTotal = () => {
 };
 
 const checkFormInputsForError = () => {
-  const typeInputError = expenseFormType.value === "Select Type";
+  const typeInputError = expenseFormType.value === "default";
   const descriptionError = expenseFormDescription.value.length < 4;
   const amountError = Number(expenseFormAmount.value) <= 0;
 
