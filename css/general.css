@@ -119,5 +119,12 @@ h4 {
 
 .flex-group {
   display: flex;
+  flex-wrap: wrap;
   gap: 11px;
+}
+
+@media (max-width: 50rem) {
+  .even-columns {
+    grid-template-columns: 1fr;
+  }
 }
