@@ -21,6 +21,10 @@ a {
   text-decoration: none;
 }
 
+i {
+  pointer-events: none;
+}
+
 ul {
   list-style-type: none;
 }
