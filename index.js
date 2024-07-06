@@ -2,6 +2,7 @@ const newExpenseForm = document.querySelector(".new-expense-form");
 const expenseFormType = document.querySelector("#list-type");
 const expenseFormDescription = document.querySelector("#description");
 const expenseFormAmount = document.querySelector("#amount");
+const expenseFormErrorMessage = document.querySelector(".form-error-message");
 
 const incomeList = document.querySelector(".income-list");
 const expenseList = document.querySelector(".expense-list");
@@ -74,6 +75,7 @@ const resetFormValues = () => {
   expenseFormType.value = "default";
   expenseFormDescription.value = "";
   expenseFormAmount.value = "";
+  expenseFormErrorMessage.classList.remove("active");
 };
 
 const getBalanceTotal = () => {
@@ -93,6 +95,11 @@ const removeTransaction = (type, transactionItem, priceAmount) => {
 
   minusTransactionAmount(type, priceAmount);
   parentList.removeChild(transactionItem);
+};
+
+const addFormErrorMessage = (message) => {
+  expenseFormErrorMessage.classList.add("active");
+  expenseFormErrorMessage.innerHTML = message;
 };
 
 const addGlobalEventListener = (type, selector, callback) => {
@@ -122,7 +129,7 @@ newExpenseForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   if (checkFormInputsForError()) {
-    alert("finish filling out new transaction form correctly");
+    addFormErrorMessage("Form credentials are invalid");
     return;
   }
 
@@ -137,7 +144,7 @@ expenseFormAmount.addEventListener("beforeinput", function (e) {
     e.target.value.substring(e.target.selectionEnd);
   if (!/^(\d{0,7}|\d{3}-?\d{0,4}|)$/.test(nextVal)) {
     e.preventDefault();
-    alert("Amount has to be a number value");
+    addFormErrorMessage("Amount only excepts a number value");
   }
   return;
 });
