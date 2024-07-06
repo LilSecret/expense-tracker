@@ -9,7 +9,7 @@
   transition: 300ms ease;
   font-weight: bold;
 
-  & .active {
+  &.active {
     display: block;
   }
 }
