@@ -10,30 +10,43 @@ const incomeListTotal = document.querySelector(".income-list-total");
 const expenseListTotal = document.querySelector(".expense-list-total");
 const balanceTotal = document.querySelector(".balance-total");
 
-let expenseTotal = 0;
-let incomeTotal = 0;
+const wallet = {
+  expenseTotal: 0,
+  incomeTotal: 0,
+  getBalanceTotal: function () {
+    return this.incomeTotal - this.expenseTotal;
+  },
+};
+
+// expenseTransactions {title, cost, date}[]
+const expenseTransactions = [];
+
+// incomeTransactions {title,  cost, date}[]
+const incomeTransactions = [];
 
 let isFormSubmitted = false;
 
 const addTransactionTotal = (type, amount) => {
   switch (type) {
     case "expense-list":
-      expenseTotal += amount;
-      expenseListTotal.innerHTML = expenseTotal;
+      wallet.expenseTotal += amount;
+      expenseListTotal.innerHTML = wallet.expenseTotal;
       break;
 
     case "income-list":
-      incomeTotal += amount;
-      incomeListTotal.innerHTML = incomeTotal;
+      wallet.incomeTotal += amount;
+      incomeListTotal.innerHTML = wallet.incomeTotal;
       break;
 
     default:
       throw new Error(`this ${type} of list is not valid`);
   }
-  balanceTotal.innerHTML = getBalanceTotal();
+  balanceTotal.innerHTML = wallet.getBalanceTotal();
 };
 
 const minusTransactionAmount = (type, amount) => {
+  const { expenseTotal, incomeTotal } = wallet;
+
   switch (type) {
     case "expense-list":
       expenseTotal -= amount;
@@ -48,11 +61,10 @@ const minusTransactionAmount = (type, amount) => {
     default:
       throw new Error(`this ${type} of list is not valid`);
   }
-  balanceTotal.innerHTML = getBalanceTotal();
+  balanceTotal.innerHTML = wallet.getBalanceTotal();
 };
 
 const deployItemInTransactionList = (type, description, amount) => {
-  console.log(type);
   const transactionList = type === "income-list" ? incomeList : expenseList;
   const listItem = document.createElement("li");
 
@@ -78,10 +90,6 @@ const resetFormValues = () => {
   expenseFormErrorMessage.classList.remove("active");
 };
 
-const getBalanceTotal = () => {
-  return incomeTotal - expenseTotal;
-};
-
 const checkFormInputsForError = () => {
   const typeInputError = expenseFormType.value === "default";
   const descriptionError = expenseFormDescription.value.length < 4;
@@ -90,10 +98,13 @@ const checkFormInputsForError = () => {
   return typeInputError || descriptionError || amountError;
 };
 
-const removeTransaction = (type, transactionItem, priceAmount) => {
+const removeTransaction = (type, transactionItem) => {
   const parentList = document.querySelector(`.${type}`);
+  const priceCount = Number(
+    transactionItem.querySelector(".item-price").innerHTML
+  );
 
-  minusTransactionAmount(type, priceAmount);
+  minusTransactionAmount(type, priceCount);
   parentList.removeChild(transactionItem);
 };
 
@@ -114,11 +125,8 @@ addGlobalEventListener("click", ".remove-transaction-btn", (e) => {
   const transaction = e.target.parentElement.parentElement;
   const transactionList =
     e.target.parentElement.parentElement.parentElement.classList[0];
-  const priceNumber = Number(
-    e.target.parentElement.parentElement.querySelector(".item-price").innerHTML
-  );
 
-  removeTransaction(transactionList, transaction, priceNumber);
+  removeTransaction(transactionList, transaction);
 });
 
 newExpenseForm.addEventListener("submit", (e) => {
