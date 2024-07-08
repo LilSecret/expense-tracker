@@ -13,9 +13,6 @@ const balanceTotal = document.querySelector(".balance-total");
 const wallet = {
   expenseTotal: 0,
   incomeTotal: 0,
-  getBalanceTotal: function () {
-    return this.incomeTotal - this.expenseTotal;
-  },
 };
 
 // expenseTransactions {title, cost, date}[]
@@ -25,6 +22,10 @@ const expenseTransactions = [];
 const incomeTransactions = [];
 
 let isFormSubmitted = false;
+
+const getBalanceTotal = () => {
+  return wallet.incomeTotal - wallet.expenseTotal;
+};
 
 const addTransactionTotal = (type, amount) => {
   switch (type) {
@@ -41,7 +42,9 @@ const addTransactionTotal = (type, amount) => {
     default:
       throw new Error(`this ${type} of list is not valid`);
   }
-  balanceTotal.innerHTML = wallet.getBalanceTotal();
+
+  localStorage.setItem("wallet", JSON.stringify(wallet));
+  balanceTotal.innerHTML = getBalanceTotal();
 };
 
 const minusTransactionAmount = (type, amount) => {
@@ -61,7 +64,9 @@ const minusTransactionAmount = (type, amount) => {
     default:
       throw new Error(`this ${type} of list is not valid`);
   }
-  balanceTotal.innerHTML = wallet.getBalanceTotal();
+
+  localStorage.setItem("wallet", JSON.stringify(wallet));
+  balanceTotal.innerHTML = getBalanceTotal();
 };
 
 const deployItemInTransactionList = (type, description, amount) => {
@@ -111,6 +116,44 @@ const removeTransaction = (type, transactionItem) => {
 const addFormErrorMessage = (message) => {
   expenseFormErrorMessage.classList.add("active");
   expenseFormErrorMessage.innerHTML = message;
+};
+
+const loadLocalStorage = () => {
+  const storedWallet = JSON.parse(localStorage.getItem("wallet"));
+  // wallet { expensesTotal, incomeTotal }
+  // expenseTransactions {title, cost, date}[]
+  // incomeTransactions {title, cost, date}[]
+
+  // load expenseTransactions
+  // load incomeTransactions
+
+  // Wallet
+  if (storedWallet) {
+    for (const property in storedWallet) {
+      const firstWord = firstWordOfCamelCaseStr(property);
+
+      wallet[property] = storedWallet[property];
+      document.querySelector("." + firstWord + "-list-total").innerHTML =
+        wallet[property];
+    }
+    balanceTotal.innerHTML = getBalanceTotal();
+  } else {
+    localStorage.setItem(
+      "wallet",
+      JSON.stringify({
+        expenseTotal: wallet.expenseTotal,
+        incomeTotal: wallet.incomeTotal,
+      })
+    );
+  }
+};
+
+const onStartup = () => {
+  loadLocalStorage();
+};
+
+const firstWordOfCamelCaseStr = (string) => {
+  return string.replace(/([A-Z])/g, " $1").split(" ")[0];
 };
 
 const addGlobalEventListener = (type, selector, callback) => {
