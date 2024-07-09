@@ -15,10 +15,10 @@ const wallet = {
   incomeTotal: 0,
 };
 
-// expenseTransactions {title, cost, date}[]
+// expenseTransactions {description, cost}[]
 const expenseTransactions = [];
 
-// incomeTransactions {title,  cost, date}[]
+// incomeTransactions {description,  cost}[]
 const incomeTransactions = [];
 
 let isFormSubmitted = false;
@@ -27,38 +27,53 @@ const getBalanceTotal = () => {
   return wallet.incomeTotal - wallet.expenseTotal;
 };
 
-const addTransactionTotal = (type, amount) => {
+const saveNewTransactionItem = (type, description, amount) => {
   switch (type) {
     case "expense-list":
       wallet.expenseTotal += amount;
       expenseListTotal.innerHTML = wallet.expenseTotal;
+      expenseTransactions.push({ description, amount });
+      localStorage.setItem(
+        "expense-transactions",
+        JSON.stringify(expenseTransactions)
+      );
       break;
-
     case "income-list":
       wallet.incomeTotal += amount;
       incomeListTotal.innerHTML = wallet.incomeTotal;
+      incomeTransactions.push({ description, amount });
+      localStorage.setItem(
+        "income-transactions",
+        JSON.stringify(incomeTransactions)
+      );
       break;
 
     default:
-      throw new Error(`this ${type} of list is not valid`);
+      throw new Error(`this ${type} list does not exist`);
   }
-
   localStorage.setItem("wallet", JSON.stringify(wallet));
-  balanceTotal.innerHTML = getBalanceTotal();
 };
 
-const minusTransactionAmount = (type, amount) => {
-  const { expenseTotal, incomeTotal } = wallet;
-
+const removeTransactionItem = (type, description, amount) => {
   switch (type) {
     case "expense-list":
-      expenseTotal -= amount;
-      expenseListTotal.innerHTML = expenseTotal;
+      wallet.expenseTotal -= amount;
+      expenseListTotal.innerHTML = wallet.expenseTotal;
+      //remove from expense transactions
+      localStorage.setItem(
+        "expense-transactions",
+        JSON.stringify(expenseTransactions)
+      );
       break;
 
     case "income-list":
-      incomeTotal -= amount;
-      incomeListTotal.innerHTML = incomeTotal;
+      wallet.incomeTotal -= amount;
+      incomeListTotal.innerHTML = wallet.incomeTotal;
+      //remove from income transactions
+      localStorage.setItem(
+        "income-transactions",
+        JSON.stringify(incomeTransactions)
+      );
       break;
 
     default:
@@ -66,7 +81,6 @@ const minusTransactionAmount = (type, amount) => {
   }
 
   localStorage.setItem("wallet", JSON.stringify(wallet));
-  balanceTotal.innerHTML = getBalanceTotal();
 };
 
 const deployItemInTransactionList = (type, description, amount) => {
@@ -85,7 +99,6 @@ const deployItemInTransactionList = (type, description, amount) => {
     </div>`;
 
   transactionList.appendChild(listItem);
-  addTransactionTotal(type, amount);
 };
 
 const resetFormValues = () => {
@@ -118,16 +131,9 @@ const addFormErrorMessage = (message) => {
   expenseFormErrorMessage.innerHTML = message;
 };
 
-const loadLocalStorage = () => {
+const loadWalletFromLS = () => {
   const storedWallet = JSON.parse(localStorage.getItem("wallet"));
-  // wallet { expensesTotal, incomeTotal }
-  // expenseTransactions {title, cost, date}[]
-  // incomeTransactions {title, cost, date}[]
 
-  // load expenseTransactions
-  // load incomeTransactions
-
-  // Wallet
   if (storedWallet) {
     for (const property in storedWallet) {
       const firstWord = firstWordOfCamelCaseStr(property);
@@ -136,6 +142,7 @@ const loadLocalStorage = () => {
       document.querySelector("." + firstWord + "-list-total").innerHTML =
         wallet[property];
     }
+    console.log(wallet);
     balanceTotal.innerHTML = getBalanceTotal();
   } else {
     localStorage.setItem(
@@ -146,6 +153,50 @@ const loadLocalStorage = () => {
       })
     );
   }
+};
+
+const loadTransactionsFromLS = () => {
+  const storedExpenseTransactions = JSON.parse(
+    localStorage.getItem("expense-transactions")
+  );
+  const storedIncomeTransactions = JSON.parse(
+    localStorage.getItem("income-transactions")
+  );
+
+  if (storedExpenseTransactions) {
+    storedExpenseTransactions.forEach((element) => {
+      deployItemInTransactionList(
+        "expense-list",
+        element.description,
+        element.amount
+      );
+    });
+  } else {
+    localStorage.setItem(
+      "expense-transactions",
+      JSON.stringify(expenseTransactions)
+    );
+  }
+
+  if (storedIncomeTransactions) {
+    storedIncomeTransactions.forEach((element) => {
+      deployItemInTransactionList(
+        "income-list",
+        element.description,
+        element.amount
+      );
+    });
+  } else {
+    localStorage.setItem(
+      "income-transactions",
+      JSON.stringify(incomeTransactions)
+    );
+  }
+};
+
+const loadLocalStorage = () => {
+  loadWalletFromLS();
+  loadTransactionsFromLS();
 };
 
 const onStartup = () => {
@@ -172,6 +223,8 @@ addGlobalEventListener("click", ".remove-transaction-btn", (e) => {
   removeTransaction(transactionList, transaction);
 });
 
+onStartup();
+
 newExpenseForm.addEventListener("submit", (e) => {
   const type = expenseFormType.value;
   const description = expenseFormDescription.value;
@@ -184,7 +237,9 @@ newExpenseForm.addEventListener("submit", (e) => {
     return;
   }
 
+  saveNewTransactionItem(type, description, amount);
   deployItemInTransactionList(type, description, amount);
+  balanceTotal.innerHTML = getBalanceTotal();
   resetFormValues();
 });
 
