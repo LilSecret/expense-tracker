@@ -27,12 +27,12 @@ const getBalanceTotal = () => {
   return wallet.incomeTotal - wallet.expenseTotal;
 };
 
-const saveNewTransactionItem = (type, description, amount) => {
+const saveNewTransactionItem = (type, description, amount, date) => {
   switch (type) {
     case "expense-list":
       wallet.expenseTotal += amount;
       expenseListTotal.innerHTML = wallet.expenseTotal;
-      expenseTransactions.push({ description, amount });
+      expenseTransactions.push({ description, amount, date });
       localStorage.setItem(
         "expense-transactions",
         JSON.stringify(expenseTransactions)
@@ -41,7 +41,7 @@ const saveNewTransactionItem = (type, description, amount) => {
     case "income-list":
       wallet.incomeTotal += amount;
       incomeListTotal.innerHTML = wallet.incomeTotal;
-      incomeTransactions.push({ description, amount });
+      incomeTransactions.push({ description, amount, date });
       localStorage.setItem(
         "income-transactions",
         JSON.stringify(incomeTransactions)
@@ -91,7 +91,7 @@ const removeTransactionItem = (type, description, amount) => {
   localStorage.setItem("wallet", JSON.stringify(wallet));
 };
 
-const deployItemInTransactionList = (type, description, amount) => {
+const deployItemInTransactionList = (type, description, amount, date) => {
   const transactionList = type === "income-list" ? incomeList : expenseList;
   const listItem = document.createElement("li");
 
@@ -100,7 +100,7 @@ const deployItemInTransactionList = (type, description, amount) => {
     <h4 class="description">${description}</h4>
     <div class="transaction-item-right">
     <div><span class='item-price'>${amount}</span>$</div>
-    <span>22/3/24</span>
+    <span>${date}</span>
     <button class="remove-transaction-btn btn">
     <i class="fa-regular fa-trash-can"></i> Delete
     </button>
@@ -152,7 +152,6 @@ const loadWalletFromLS = () => {
       document.querySelector("." + firstWord + "-list-total").innerHTML =
         wallet[property];
     }
-    console.log(wallet);
     balanceTotal.innerHTML = getBalanceTotal();
   } else {
     localStorage.setItem(
@@ -179,7 +178,8 @@ const loadTransactionsFromLS = () => {
       deployItemInTransactionList(
         "expense-list",
         element.description,
-        element.amount
+        element.amount,
+        element.date
       );
     });
   } else {
@@ -195,7 +195,8 @@ const loadTransactionsFromLS = () => {
       deployItemInTransactionList(
         "income-list",
         element.description,
-        element.amount
+        element.amount,
+        element.date
       );
     });
   } else {
@@ -241,6 +242,10 @@ newExpenseForm.addEventListener("submit", (e) => {
   const type = expenseFormType.value;
   const description = expenseFormDescription.value;
   const amount = Number(expenseFormAmount.value);
+  const month = new Date().getMonth();
+  const day = new Date().getDate();
+  const year = new Date().getFullYear().toString().slice(-2);
+  const date = `${month}/${day}/${year}`;
 
   e.preventDefault();
 
@@ -249,8 +254,8 @@ newExpenseForm.addEventListener("submit", (e) => {
     return;
   }
 
-  saveNewTransactionItem(type, description, amount);
-  deployItemInTransactionList(type, description, amount);
+  saveNewTransactionItem(type, description, amount, date);
+  deployItemInTransactionList(type, description, amount, date);
   balanceTotal.innerHTML = getBalanceTotal();
   resetFormValues();
 });
