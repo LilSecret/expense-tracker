@@ -59,7 +59,11 @@ const removeTransactionItem = (type, description, amount) => {
     case "expense-list":
       wallet.expenseTotal -= amount;
       expenseListTotal.innerHTML = wallet.expenseTotal;
-      //remove from expense transactions
+      for (let i = 0; i < expenseTransactions.length; i++) {
+        if (expenseTransactions[i].description === description) {
+          expenseTransactions.splice(i, 1);
+        }
+      }
       localStorage.setItem(
         "expense-transactions",
         JSON.stringify(expenseTransactions)
@@ -69,7 +73,11 @@ const removeTransactionItem = (type, description, amount) => {
     case "income-list":
       wallet.incomeTotal -= amount;
       incomeListTotal.innerHTML = wallet.incomeTotal;
-      //remove from income transactions
+      for (let i = 0; i < incomeTransactions.length; i++) {
+        if (incomeTransactions[i].description === description) {
+          incomeTransactions.splice(i, 1);
+        }
+      }
       localStorage.setItem(
         "income-transactions",
         JSON.stringify(incomeTransactions)
@@ -89,7 +97,7 @@ const deployItemInTransactionList = (type, description, amount) => {
 
   listItem.classList.add("transaction-item");
   listItem.innerHTML = `
-    <h4>${description}</h4>
+    <h4 class="description">${description}</h4>
     <div class="transaction-item-right">
     <div><span class='item-price'>${amount}</span>$</div>
     <span>22/3/24</span>
@@ -118,12 +126,14 @@ const checkFormInputsForError = () => {
 
 const removeTransaction = (type, transactionItem) => {
   const parentList = document.querySelector(`.${type}`);
+  const description = transactionItem.querySelector(".description").innerHTML;
   const priceCount = Number(
     transactionItem.querySelector(".item-price").innerHTML
   );
 
-  minusTransactionAmount(type, priceCount);
+  removeTransactionItem(type, description, priceCount);
   parentList.removeChild(transactionItem);
+  balanceTotal.innerHTML = getBalanceTotal();
 };
 
 const addFormErrorMessage = (message) => {
@@ -165,6 +175,7 @@ const loadTransactionsFromLS = () => {
 
   if (storedExpenseTransactions) {
     storedExpenseTransactions.forEach((element) => {
+      expenseTransactions.push(element);
       deployItemInTransactionList(
         "expense-list",
         element.description,
@@ -180,6 +191,7 @@ const loadTransactionsFromLS = () => {
 
   if (storedIncomeTransactions) {
     storedIncomeTransactions.forEach((element) => {
+      incomeTransactions.push(element);
       deployItemInTransactionList(
         "income-list",
         element.description,
