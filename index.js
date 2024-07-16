@@ -70,8 +70,8 @@ newExpenseForm.addEventListener("submit", (e) => {
   const amount = Number(expenseFormAmount.value);
   const month = new Date().getMonth() + 1;
   const day = new Date().getDate();
-  const year = new Date().getFullYear().toString().slice(-2);
-  const date = `${month}/${day}/${year}`;
+  // const year = new Date().getFullYear().toString().slice(-2);
+  const date = `${month}/${day}`;
 
   e.preventDefault();
 
