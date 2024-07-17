@@ -64,6 +64,69 @@ const updateChartData = () => {
   chart.update();
 };
 
+const addCountToDateData = (type, date, count) => {
+  switch (type) {
+    case "income-list":
+      let isIncomeDateLogged = false;
+      incomeDateData.forEach((dateItem) => {
+        if (dateItem.date === date) {
+          isIncomeDateLogged = true;
+          dateItem.count += count;
+        }
+      });
+      if (!isIncomeDateLogged) {
+        incomeDateData.push({ date, count });
+      }
+      break;
+    case "expense-list":
+      let isExpenseDateLogged = false;
+      expenseDateData.forEach((dateItem) => {
+        if (dateItem.date === date) {
+          isExpenseDateLogged = true;
+          dateItem.count += count;
+        }
+      });
+      if (!isExpenseDateLogged) {
+        expenseDateData.push({ date, count });
+      }
+      break;
+
+    default:
+      throw new Error("This type does not exist");
+  }
+};
+
+const handleOtherDateData = (type, date) => {
+  switch (type) {
+    case "income-list":
+      if (!expenseDateData.includes(date)) {
+        expenseDateData.push({ date, count: 0 });
+      }
+      break;
+    case "expense-list":
+      if (!incomeDateData.includes(date)) {
+        incomeDateData.push({ date, count: 0 });
+      }
+      break;
+
+    default:
+      throw new Error("This type of date data does not exist");
+  }
+};
+
+const addTransactionToChart = (type, date, count) => {
+  // add typeDateData
+  // if incomeDateData.date = date then incomeDateData.count += count
+  // else incomeDateData.push({ date, count  });
+  addCountToDateData(type, date, count);
+
+  handleOtherDateData(type, date);
+  // check to see if other type date data has date
+  // if true return
+
+  updateChartData();
+};
+
 const chart = new Chart(ctx, {
   type: "line",
   data: {
