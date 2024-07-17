@@ -82,6 +82,7 @@ newExpenseForm.addEventListener("submit", (e) => {
 
   saveNewTransactionItem(type, description, amount, date);
   deployItemInTransactionList(type, description, amount, date);
+  addTransactionToChart(type, date, amount);
   balanceTotal.innerHTML = getBalanceTotal();
   resetFormValues();
 });
