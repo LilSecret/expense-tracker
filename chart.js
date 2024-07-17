@@ -96,15 +96,27 @@ const addCountToDateData = (type, date, count) => {
   }
 };
 
-const handleOtherDateData = (type, date) => {
+const handleOtherDateDataAfterAdd = (type, date) => {
   switch (type) {
     case "income-list":
-      if (!expenseDateData.includes(date)) {
+      let isExpenseDateLogged = false;
+      expenseDateData.forEach((graphPoint) => {
+        if (graphPoint.date === date) {
+          isExpenseDateLogged = true;
+        }
+      });
+      if (!isExpenseDateLogged) {
         expenseDateData.push({ date, count: 0 });
       }
       break;
     case "expense-list":
-      if (!incomeDateData.includes(date)) {
+      let isIncomeDateLogged = false;
+      incomeDateData.forEach((graphPoint) => {
+        if (graphPoint.date === date) {
+          isIncomeDateLogged = true;
+        }
+      });
+      if (!isIncomeDateLogged) {
         incomeDateData.push({ date, count: 0 });
       }
       break;
@@ -116,7 +128,7 @@ const handleOtherDateData = (type, date) => {
 
 const addTransactionToChart = (type, date, count) => {
   addCountToDateData(type, date, count);
-  handleOtherDateData(type, date);
+  handleOtherDateDataAfterAdd(type, date);
   updateChartData();
 };
 
