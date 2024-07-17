@@ -115,15 +115,8 @@ const handleOtherDateData = (type, date) => {
 };
 
 const addTransactionToChart = (type, date, count) => {
-  // add typeDateData
-  // if incomeDateData.date = date then incomeDateData.count += count
-  // else incomeDateData.push({ date, count  });
   addCountToDateData(type, date, count);
-
   handleOtherDateData(type, date);
-  // check to see if other type date data has date
-  // if true return
-
   updateChartData();
 };
 
