@@ -62,6 +62,7 @@ addGlobalEventListener("click", ".remove-transaction-btn", (e) => {
     e.target.parentElement.parentElement.parentElement.classList[0];
 
   removeTransactionFromList(transactionList, transaction);
+  removeTransactionFromChart(transactionList, transaction);
 });
 
 newExpenseForm.addEventListener("submit", (e) => {

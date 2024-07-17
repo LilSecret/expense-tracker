@@ -100,7 +100,7 @@ const deployItemInTransactionList = (type, description, amount, date) => {
     <h4 class="description">${description}</h4>
     <div class="transaction-item-right">
     <div><span class='item-price'>${amount}</span>$</div>
-    <span>${date}</span>
+    <span class='item-date'>${date}</span>
     <button class="remove-transaction-btn btn">
     <i class="fa-regular fa-trash-can"></i> Delete
     </button>

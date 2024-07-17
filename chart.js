@@ -132,6 +132,51 @@ const addTransactionToChart = (type, date, count) => {
   updateChartData();
 };
 
+const checkChartDataForErrors = () => {
+  const lastExpenseGraphPoint = expenseDateData[expenseDateData.length - 1];
+  const lastIncomeGraphPoint = incomeDateData[incomeDateData.length - 1];
+  const firstExpenseGraphPoint = expenseDateData[0];
+  const firstIncomeGraphPoint = incomeDateData[0];
+
+  if (lastExpenseGraphPoint.count === 0 && lastIncomeGraphPoint.count === 0) {
+    expenseDateData.pop();
+    incomeDateData.pop();
+  }
+
+  if (firstExpenseGraphPoint.count === 0 && firstIncomeGraphPoint.count === 0) {
+    expenseDateData.splice(0, 1);
+    incomeDateData.splice(0, 1);
+  }
+};
+
+const removeTransactionFromChart = (type, transaction) => {
+  const price = Number(transaction.querySelector(".item-price").innerHTML);
+  const date = transaction.querySelector(".item-date").innerHTML;
+
+  switch (type) {
+    case "income-list":
+      incomeDateData.forEach((graphPoint) => {
+        if (graphPoint.date === date) {
+          graphPoint.count -= price;
+        }
+      });
+      break;
+    case "expense-list":
+      expenseDateData.forEach((graphPoint) => {
+        if (graphPoint.date === date) {
+          graphPoint.count -= price;
+        }
+      });
+      break;
+
+    default:
+      throw new Error(type + " does not exist");
+  }
+
+  checkChartDataForErrors();
+  updateChartData();
+};
+
 const chart = new Chart(ctx, {
   type: "line",
   data: {
