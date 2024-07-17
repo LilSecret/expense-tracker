@@ -48,6 +48,7 @@ const loadTransactionDataAmount = () => {
 };
 
 const updateChartData = () => {
+  chart.data.labels = getUniqueSortedDates();
   chart.data.datasets.forEach((graph) => {
     switch (graph.label) {
       case "Income":
