@@ -74,18 +74,18 @@ const updateChartData = () => {
   chart.update();
 };
 
-const addCountToDateData = (type, date, count) => {
+const addCountToDateData = (type, date, amount) => {
   switch (type) {
     case "income-list":
       let isIncomeDateLogged = false;
       incomeChartData.forEach((dateItem) => {
         if (dateItem.date === date) {
           isIncomeDateLogged = true;
-          dateItem.count += count;
+          dateItem.amount += amount;
         }
       });
       if (!isIncomeDateLogged) {
-        incomeChartData.push({ date, count });
+        incomeChartData.push({ date, amount });
       }
       break;
     case "expense-list":
@@ -93,11 +93,11 @@ const addCountToDateData = (type, date, count) => {
       expenseChartData.forEach((dateItem) => {
         if (dateItem.date === date) {
           isExpenseDateLogged = true;
-          dateItem.count += count;
+          dateItem.amount += amount;
         }
       });
       if (!isExpenseDateLogged) {
-        expenseChartData.push({ date, count });
+        expenseChartData.push({ date, amount });
       }
       break;
 
@@ -116,7 +116,10 @@ const handleOtherDateDataAfterAdd = (type, date) => {
         }
       });
       if (!isExpenseDateLogged) {
-        expenseChartData.push({ date, count: 0 });
+        expenseChartData.push({
+          date,
+          amount: expenseChartData[expenseChartData.length - 1].amount,
+        });
       }
       break;
     case "expense-list":
@@ -127,7 +130,10 @@ const handleOtherDateDataAfterAdd = (type, date) => {
         }
       });
       if (!isIncomeDateLogged) {
-        incomeChartData.push({ date, count: 0 });
+        incomeChartData.push({
+          date,
+          amount: incomeChartData[incomeChartData.length - 1].amount,
+        });
       }
       break;
 
@@ -136,8 +142,10 @@ const handleOtherDateDataAfterAdd = (type, date) => {
   }
 };
 
-const addTransactionToChart = (type, date, count) => {
-  addCountToDateData(type, date, count);
+const addTransactionToChart = (type, transaction) => {
+  const { date, amount } = transaction;
+
+  addCountToDateData(type, date, amount);
   handleOtherDateDataAfterAdd(type, date);
   updateChartData();
 };
