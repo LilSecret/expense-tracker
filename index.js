@@ -35,7 +35,7 @@ const loadWalletFromLS = () => {
 const loadLocalStorage = () => {
   loadWalletFromLS();
   loadTransactionsFromLS();
-  // loadTransactionDataAmount();
+  loadTransactionChartData();
 };
 
 const firstWordOfCamelCaseStr = (string) => {
