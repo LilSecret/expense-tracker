@@ -15,12 +15,14 @@ const incomeTransactions = [
   // { description: "Salary", amount: 1500, date: "7/14" },
 ];
 
-const saveNewTransactionItem = (type, description, amount, date) => {
+const saveNewTransactionItem = (type, transaction) => {
+  const { amount } = transaction;
+
   switch (type) {
     case "expense-list":
       wallet.expenseTotal += amount;
       expenseListTotal.innerHTML = wallet.expenseTotal;
-      expenseTransactions.push({ description, amount, date });
+      expenseTransactions.push(transaction);
       localStorage.setItem(
         "expense-transactions",
         JSON.stringify(expenseTransactions)
@@ -29,7 +31,7 @@ const saveNewTransactionItem = (type, description, amount, date) => {
     case "income-list":
       wallet.incomeTotal += amount;
       incomeListTotal.innerHTML = wallet.incomeTotal;
-      incomeTransactions.push({ description, amount, date });
+      incomeTransactions.push(transaction);
       localStorage.setItem(
         "income-transactions",
         JSON.stringify(incomeTransactions)
@@ -42,13 +44,21 @@ const saveNewTransactionItem = (type, description, amount, date) => {
   localStorage.setItem("wallet", JSON.stringify(wallet));
 };
 
-const removeTransactionItem = (type, description, amount) => {
+const removeTransactionElement = (type, transactionElement) => {
+  const parentList = document.querySelector(`.${type}`);
+
+  parentList.removeChild(transactionElement);
+};
+
+const removeTransactionInStorage = (type, transaction) => {
+  const { id, amount } = transaction;
+
   switch (type) {
     case "expense-list":
       wallet.expenseTotal -= amount;
       expenseListTotal.innerHTML = wallet.expenseTotal;
       for (let i = 0; i < expenseTransactions.length; i++) {
-        if (expenseTransactions[i].description === description) {
+        if (expenseTransactions[i].id === id) {
           expenseTransactions.splice(i, 1);
         }
       }
@@ -62,7 +72,7 @@ const removeTransactionItem = (type, description, amount) => {
       wallet.incomeTotal -= amount;
       incomeListTotal.innerHTML = wallet.incomeTotal;
       for (let i = 0; i < incomeTransactions.length; i++) {
-        if (incomeTransactions[i].description === description) {
+        if (incomeTransactions[i].id === id) {
           incomeTransactions.splice(i, 1);
         }
       }
@@ -79,22 +89,12 @@ const removeTransactionItem = (type, description, amount) => {
   localStorage.setItem("wallet", JSON.stringify(wallet));
 };
 
-const removeTransactionFromList = (type, transactionItem) => {
-  const parentList = document.querySelector(`.${type}`);
-  const description = transactionItem.querySelector(".description").innerHTML;
-  const priceCount = Number(
-    transactionItem.querySelector(".item-price").innerHTML
-  );
-
-  removeTransactionItem(type, description, priceCount);
-  parentList.removeChild(transactionItem);
-  balanceTotal.innerHTML = getBalanceTotal();
-};
-
-const deployItemInTransactionList = (type, description, amount, date) => {
+const deployItemInTransactionList = (type, transaction) => {
   const transactionList = type === "income-list" ? incomeList : expenseList;
+  const { id, description, date, amount } = transaction;
   const listItem = document.createElement("li");
 
+  listItem.setAttribute("data-id", id);
   listItem.classList.add("transaction-item");
   listItem.innerHTML = `
     <h4 class="description">${description}</h4>
@@ -118,14 +118,9 @@ const loadTransactionsFromLS = () => {
   );
 
   if (storedExpenseTransactions) {
-    storedExpenseTransactions.forEach((element) => {
-      expenseTransactions.push(element);
-      deployItemInTransactionList(
-        "expense-list",
-        element.description,
-        element.amount,
-        element.date
-      );
+    storedExpenseTransactions.forEach((transaction) => {
+      expenseTransactions.push(transaction);
+      deployItemInTransactionList("expense-list", transaction);
     });
   } else {
     localStorage.setItem(
@@ -135,14 +130,9 @@ const loadTransactionsFromLS = () => {
   }
 
   if (storedIncomeTransactions) {
-    storedIncomeTransactions.forEach((element) => {
-      incomeTransactions.push(element);
-      deployItemInTransactionList(
-        "income-list",
-        element.description,
-        element.amount,
-        element.date
-      );
+    storedIncomeTransactions.forEach((transaction) => {
+      incomeTransactions.push(transaction);
+      deployItemInTransactionList("income-list", transaction);
     });
   } else {
     localStorage.setItem(

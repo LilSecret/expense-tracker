@@ -35,7 +35,7 @@ const loadWalletFromLS = () => {
 const loadLocalStorage = () => {
   loadWalletFromLS();
   loadTransactionsFromLS();
-  loadTransactionDataAmount();
+  // loadTransactionDataAmount();
 };
 
 const firstWordOfCamelCaseStr = (string) => {
@@ -57,12 +57,28 @@ const onStartup = () => {
 onStartup();
 
 addGlobalEventListener("click", ".remove-transaction-btn", (e) => {
-  const transaction = e.target.parentElement.parentElement;
+  const transactionElement = e.target.parentElement.parentElement;
   const transactionList =
     e.target.parentElement.parentElement.parentElement.classList[0];
+  const id = transactionElement.getAttribute("data-id");
+  const description =
+    transactionElement.querySelector(".description").innerHTML;
+  const date = transactionElement.querySelector(".item-date").innerHTML;
+  const amount = Number(
+    transactionElement.querySelector(".item-price").innerHTML
+  );
 
-  removeTransactionFromList(transactionList, transaction);
-  removeTransactionFromChart(transactionList, transaction);
+  const transaction = {
+    id,
+    description,
+    date,
+    amount,
+  };
+
+  removeTransactionElement(transactionList, transactionElement);
+  removeTransactionInStorage(transactionList, transaction);
+  // removeTransactionFromChart(transactionList, transaction);
+  balanceTotal.innerHTML = getBalanceTotal();
 });
 
 newExpenseForm.addEventListener("submit", (e) => {
@@ -71,8 +87,16 @@ newExpenseForm.addEventListener("submit", (e) => {
   const amount = Number(expenseFormAmount.value);
   const month = new Date().getMonth() + 1;
   const day = new Date().getDate();
+  const id = Math.random().toString(16).slice(2, 10);
   // const year = new Date().getFullYear().toString().slice(-2);
   const date = `${month}/${day}`;
+
+  const transaction = {
+    id,
+    description,
+    date,
+    amount,
+  };
 
   e.preventDefault();
 
@@ -81,9 +105,9 @@ newExpenseForm.addEventListener("submit", (e) => {
     return;
   }
 
-  saveNewTransactionItem(type, description, amount, date);
-  deployItemInTransactionList(type, description, amount, date);
-  addTransactionToChart(type, date, amount);
+  saveNewTransactionItem(type, transaction);
+  deployItemInTransactionList(type, transaction);
+  // addTransactionToChart(type, date, amount);
   balanceTotal.innerHTML = getBalanceTotal();
   resetFormValues();
 });
