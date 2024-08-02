@@ -77,7 +77,7 @@ addGlobalEventListener("click", ".remove-transaction-btn", (e) => {
 
   removeTransactionElement(transactionList, transactionElement);
   removeTransactionInStorage(transactionList, transaction);
-  // removeTransactionFromChart(transactionList, transaction);
+  removeTransactionFromChart(transactionList, transaction);
   balanceTotal.innerHTML = getBalanceTotal();
 });
 

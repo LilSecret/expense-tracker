@@ -85,7 +85,10 @@ const addCountToDateData = (type, date, amount) => {
         }
       });
       if (!isIncomeDateLogged) {
-        incomeChartData.push({ date, amount });
+        incomeChartData.push({
+          date,
+          amount: incomeChartData[incomeChartData.length - 1].amount + amount,
+        });
       }
       break;
     case "expense-list":
@@ -97,7 +100,10 @@ const addCountToDateData = (type, date, amount) => {
         }
       });
       if (!isExpenseDateLogged) {
-        expenseChartData.push({ date, amount });
+        expenseChartData.push({
+          date,
+          amount: expenseChartData[expenseChartData.length - 1].amount + amount,
+        });
       }
       break;
 
@@ -156,33 +162,39 @@ const checkChartDataForErrors = () => {
   const firstExpenseGraphPoint = expenseChartData[0];
   const firstIncomeGraphPoint = incomeChartData[0];
 
-  if (lastExpenseGraphPoint.count === 0 && lastIncomeGraphPoint.count === 0) {
+  if (lastExpenseGraphPoint.amount === 0 && lastIncomeGraphPoint.amount === 0) {
     expenseChartData.pop();
     incomeChartData.pop();
   }
 
-  if (firstExpenseGraphPoint.count === 0 && firstIncomeGraphPoint.count === 0) {
+  if (
+    firstExpenseGraphPoint.amount === 0 &&
+    firstIncomeGraphPoint.amount === 0
+  ) {
     expenseChartData.splice(0, 1);
     incomeChartData.splice(0, 1);
   }
 };
 
 const removeTransactionFromChart = (type, transaction) => {
-  const price = Number(transaction.querySelector(".item-price").innerHTML);
-  const date = transaction.querySelector(".item-date").innerHTML;
+  const { date, amount } = transaction;
 
   switch (type) {
     case "income-list":
+      let incomeMatchedDate = false;
       incomeChartData.forEach((graphPoint) => {
-        if (graphPoint.date === date) {
-          graphPoint.count -= price;
+        if (graphPoint.date === date || incomeMatchedDate) {
+          incomeMatchedDate = true;
+          graphPoint.amount -= amount;
         }
       });
       break;
     case "expense-list":
+      let expenseMatchedDate = false;
       expenseChartData.forEach((graphPoint) => {
-        if (graphPoint.date === date) {
-          graphPoint.count -= price;
+        if (graphPoint.date === date || expenseMatchedDate) {
+          expenseMatchedDate = true;
+          graphPoint.amount -= amount;
         }
       });
       break;
