@@ -74,37 +74,28 @@ const updateChartData = () => {
   chart.update();
 };
 
+const addGraphPointAmount = (chartData, date, amount) => {
+  chartData.forEach((dateItem) => {
+    if (dateItem.date === date) {
+      dateItem.amount += amount;
+      return;
+    }
+  });
+
+  const prevSibling = chartData[chartData.length - 1] || null;
+  chartData.push({
+    date,
+    amount: prevSibling ? prevSibling.amount + amount : amount,
+  });
+};
+
 const addCountToDateData = (type, date, amount) => {
   switch (type) {
     case "income-list":
-      let isIncomeDateLogged = false;
-      incomeChartData.forEach((dateItem) => {
-        if (dateItem.date === date) {
-          isIncomeDateLogged = true;
-          dateItem.amount += amount;
-        }
-      });
-      if (!isIncomeDateLogged) {
-        incomeChartData.push({
-          date,
-          amount: incomeChartData[incomeChartData.length - 1].amount + amount,
-        });
-      }
+      addGraphPointAmount(incomeChartData, date, amount);
       break;
     case "expense-list":
-      let isExpenseDateLogged = false;
-      expenseChartData.forEach((dateItem) => {
-        if (dateItem.date === date) {
-          isExpenseDateLogged = true;
-          dateItem.amount += amount;
-        }
-      });
-      if (!isExpenseDateLogged) {
-        expenseChartData.push({
-          date,
-          amount: expenseChartData[expenseChartData.length - 1].amount + amount,
-        });
-      }
+      addGraphPointAmount(expenseChartData, date, amount);
       break;
 
     default:
@@ -112,35 +103,28 @@ const addCountToDateData = (type, date, amount) => {
   }
 };
 
+const handleOpposingGraphPoint = (chartData, date) => {
+  chartData.forEach((graphPoint) => {
+    if (graphPoint.date === date) {
+      return;
+    }
+  });
+
+  // add previous point or 0
+  const prevSibling = chartData[chartData.length - 1] || null;
+  chartData.push({
+    date,
+    amount: prevSibling ? prevSibling.amount : 0,
+  });
+};
+
 const handleOtherDateDataAfterAdd = (type, date) => {
   switch (type) {
     case "income-list":
-      let isExpenseDateLogged = false;
-      expenseChartData.forEach((graphPoint) => {
-        if (graphPoint.date === date) {
-          isExpenseDateLogged = true;
-        }
-      });
-      if (!isExpenseDateLogged) {
-        expenseChartData.push({
-          date,
-          amount: expenseChartData[expenseChartData.length - 1].amount,
-        });
-      }
+      handleOpposingGraphPoint(expenseChartData, date);
       break;
     case "expense-list":
-      let isIncomeDateLogged = false;
-      incomeChartData.forEach((graphPoint) => {
-        if (graphPoint.date === date) {
-          isIncomeDateLogged = true;
-        }
-      });
-      if (!isIncomeDateLogged) {
-        incomeChartData.push({
-          date,
-          amount: incomeChartData[incomeChartData.length - 1].amount,
-        });
-      }
+      handleOpposingGraphPoint(incomeChartData, date);
       break;
 
     default:
