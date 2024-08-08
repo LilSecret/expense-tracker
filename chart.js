@@ -160,27 +160,25 @@ const checkChartDataForErrors = () => {
   }
 };
 
+const removeGraphAmount = (chartData, date, amount) => {
+  let matchedDate = false;
+  chartData.forEach((graphPoint) => {
+    if (graphPoint.date === date || matchedDate) {
+      matchedDate = true;
+      graphPoint.amount -= amount;
+    }
+  });
+};
+
 const removeTransactionFromChart = (type, transaction) => {
   const { date, amount } = transaction;
 
   switch (type) {
     case "income-list":
-      let incomeMatchedDate = false;
-      incomeChartData.forEach((graphPoint) => {
-        if (graphPoint.date === date || incomeMatchedDate) {
-          incomeMatchedDate = true;
-          graphPoint.amount -= amount;
-        }
-      });
+      removeGraphAmount(incomeChartData, date, amount);
       break;
     case "expense-list":
-      let expenseMatchedDate = false;
-      expenseChartData.forEach((graphPoint) => {
-        if (graphPoint.date === date || expenseMatchedDate) {
-          expenseMatchedDate = true;
-          graphPoint.amount -= amount;
-        }
-      });
+      removeGraphAmount(expenseChartData, date, amount);
       break;
 
     default:
