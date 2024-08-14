@@ -13,7 +13,7 @@ const resetFormValues = () => {
 
 const checkFormInputsForError = () => {
   const typeInputError = expenseFormType.value === "default";
-  const descriptionError = expenseFormDescription.value.length < 4;
+  const descriptionError = expenseFormDescription.value.length < 3;
   const amountError = Number(expenseFormAmount.value) <= 0;
 
   return typeInputError || descriptionError || amountError;
