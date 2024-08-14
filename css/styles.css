@@ -14,6 +14,38 @@
   }
 }
 
+.filter {
+  &[data-filter="true"] .filter-reset-btn {
+    display: block;
+  }
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.filter-input {
+  padding: 4px 6px;
+}
+
+.filter-reset-btn {
+  border: none;
+  font-family: var(--ff-accent);
+  cursor: pointer;
+  outline: none;
+  border-radius: 4px;
+  padding: 1px 7px;
+  background-color: var(--clr-primary-400);
+  color: var(--clr-neutral-100);
+
+  &:hover {
+    background-color: var(--clr-primary-200);
+    color: var(--clr-neutral-900);
+  }
+}
+
 .transaction-heading {
   text-align: center;
   border-top-right-radius: 6px;
