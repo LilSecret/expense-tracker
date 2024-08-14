@@ -82,6 +82,12 @@
   min-height: 300px;
   padding-inline: 1.4rem;
   padding-top: 25px;
+
+  & ul {
+    height: 280px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
 }
 
 .transaction-item {
