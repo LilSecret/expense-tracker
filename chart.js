@@ -7,20 +7,37 @@ const addTenBtn = document.getElementById("add-ten");
 const expenseChartData = [];
 const incomeChartData = [];
 
-const getExpenseDates = () =>
-  expenseTransactions.map((transaction) => transaction.date);
-const getIncomeDates = () =>
-  incomeTransactions.map((transaction) => transaction.date);
+const getUniqueSortedDates = (fromDestination) => {
+  const expenseStorageDates = expenseTransactions.map(
+    (transaction) => transaction.date
+  );
+  const incomeStorageDates = incomeTransactions.map(
+    (transaction) => transaction.date
+  );
 
-const getUniqueSortedDates = () => {
-  const expenseDates = getExpenseDates();
-  const incomeDates = getIncomeDates();
+  const expenseLSDates = JSON.parse(
+    localStorage.getItem("expense-transactions")
+  ).map((transaction) => transaction.date);
 
-  return [...new Set(expenseDates.concat(incomeDates))].sort();
+  const incomeLSDates = JSON.parse(
+    localStorage.getItem("income-transactions")
+  ).map((transaction) => transaction.date);
+
+  switch (fromDestination) {
+    case "storage":
+      return [
+        ...new Set(expenseStorageDates.concat(incomeStorageDates)),
+      ].sort();
+    case "localStorage":
+      return [...new Set(expenseLSDates.concat(incomeLSDates))].sort();
+
+    default:
+      throw new Error(`The ${fromDestination} does not exist`);
+  }
 };
 
 const loadTransactionChartData = () => {
-  const sortedDates = getUniqueSortedDates();
+  const sortedDates = getUniqueSortedDates("storage");
 
   sortedDates.forEach((date, index) => {
     const incomeTransMatchingDate = incomeTransactions.filter(
@@ -58,7 +75,7 @@ const loadTransactionChartData = () => {
 };
 
 const updateChartData = () => {
-  chart.data.labels = getUniqueSortedDates();
+  chart.data.labels = getUniqueSortedDates("storage");
   chart.data.datasets.forEach((graph) => {
     switch (graph.label) {
       case "Income":

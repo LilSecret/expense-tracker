@@ -36,6 +36,7 @@ const loadLocalStorage = () => {
   loadWalletFromLS();
   loadTransactionsFromLS();
   loadTransactionChartData();
+  loadDatesIntoFilters();
 };
 
 const firstWordOfCamelCaseStr = (string) => {

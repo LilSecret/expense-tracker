@@ -22,8 +22,12 @@
 
 .filter-actions {
   display: flex;
-  gap: 8px;
+  gap: 11px;
   align-items: center;
+
+  &[data-visible="false"] {
+    display: none;
+  }
 }
 
 .filter-input {
@@ -43,6 +47,20 @@
   &:hover {
     background-color: var(--clr-primary-200);
     color: var(--clr-neutral-900);
+  }
+}
+
+.filter-error-message {
+  color: var(--clr-primary-400);
+  transition: 300ms ease;
+
+  &[data-visible="true"] {
+    height: auto;
+    font-size: 1rem;
+  }
+  &[data-visible="false"] {
+    height: 0;
+    font-size: 0;
   }
 }
 

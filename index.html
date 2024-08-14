@@ -69,7 +69,7 @@
       <section class="section filter" data-filter="true">
         <div class="main-inline-mw">
           <h2 class="heading">Filter Transactions</h2>
-          <div class="filter-actions">
+          <div class="filter-actions" data-visible="true">
             <div class="filter-item">
               <label for="from">From:</label>
               <select class="filter-input" name="from" id="from">
@@ -82,8 +82,16 @@
                 <option value="default" disabled selected>Select a date</option>
               </select>
             </div>
+            <button class="filter-reset-btn">
+              <i class="fa-solid fa-filter"></i>
+            </button>
             <button class="filter-reset-btn">Reset</button>
           </div>
+          <p
+            class="filter-error-message"
+            id="filter-error-message"
+            data-visible="false"
+          ></p>
         </div>
       </section>
 
@@ -155,6 +163,7 @@
     <script src="./form.js"></script>
     <script src="./transactions.js"></script>
     <script src="./chart.js"></script>
+    <script src="./filter.js"></script>
     <script src="./index.js"></script>
   </body>
 </html>
