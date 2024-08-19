@@ -99,6 +99,32 @@ const validateFromAndToDates = (fromDate, toDate) => {
   return true;
 };
 
+const filterChartData = (filteredDates) => {
+  const filteredExpenseChartData = filteredDates.map((date) =>
+    expenseChartData.find((data) => data.date === date)
+  );
+  const filteredIncomeChartData = filteredDates.map((date) =>
+    incomeChartData.find((data) => data.date === date)
+  );
+
+  chart.data.labels = filteredDates;
+  chart.data.datasets.forEach((graph) => {
+    switch (graph.label) {
+      case "Income":
+        graph.data = filteredIncomeChartData.map((dataDate) => dataDate.amount);
+        break;
+      case "Expenses":
+        graph.data = filteredExpenseChartData.map(
+          (dataDate) => dataDate.amount
+        );
+        break;
+      default:
+        throw new Error(graph + "does not exist");
+    }
+  });
+  chart.update();
+};
+
 const handleFilterSubmit = (e) => {
   e.preventDefault();
 
@@ -118,11 +144,23 @@ const handleFilterSubmit = (e) => {
       fromDate,
       toDate
     );
+    const filteredIncomeDates = filteredIncomeTransactions.map(
+      (transaction) => transaction.date
+    );
+    const filteredExpenseDates = filteredExpenseTransactions.map(
+      (transaction) => transaction.date
+    );
+    const uniqueFilterDates = [
+      ...new Set(filteredExpenseDates.concat(filteredIncomeDates)),
+    ].sort();
 
     filterForm.setAttribute("data-filter", "true");
-
+    // FILTERS TRANSACTIONS
     addFilteredTransactionsInList("income-list", filteredIncomeTransactions);
     addFilteredTransactionsInList("expense-list", filteredExpenseTransactions);
+
+    // FILTERS CHART
+    filterChartData(uniqueFilterDates);
   }
 };
 
@@ -133,5 +171,6 @@ const handleFilterReset = () => {
     filterForm.setAttribute("data-filter", "false");
     addFilteredTransactionsInList("income-list", incomeTransactions);
     addFilteredTransactionsInList("expense-list", expenseTransactions);
+    updateChartData();
   }
 };
