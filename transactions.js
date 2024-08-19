@@ -4,16 +4,9 @@ const incomeListTotal = document.querySelector(".income-list-total");
 const expenseListTotal = document.querySelector(".expense-list-total");
 const balanceTotal = document.querySelector(".balance-total");
 
-// expenseTransactions {description, cost}[]
-const expenseTransactions = [
-  // { description: "Power", amount: 500, date: "7/13" },
-  // { description: "Water", amount: 200, date: "7/13" },
-];
+const expenseTransactions = [];
 
-// incomeTransactions {description,  cost}[]
-const incomeTransactions = [
-  // { description: "Salary", amount: 1500, date: "7/14" },
-];
+const incomeTransactions = [];
 
 const saveNewTransactionItem = (type, transaction) => {
   const { amount } = transaction;

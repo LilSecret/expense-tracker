@@ -123,7 +123,6 @@ expenseFormAmount.addEventListener("beforeinput", function (e) {
     e.preventDefault();
     addFormErrorMessage("Amount only excepts a number value");
   }
-  return;
 });
 
 filterForm.addEventListener("submit", handleFilterSubmit);

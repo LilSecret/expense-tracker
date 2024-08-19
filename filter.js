@@ -7,8 +7,6 @@ const filterActions = document.querySelector(".filter-actions");
 const filterForm = document.querySelector("#filter-form");
 const filterResetBtn = document.querySelector("#filter-reset");
 
-const toggleFilterValidation = (boolean) => {};
-
 const toggleFilterError = (showError, message) => {
   filterActions.setAttribute("data-visible", showError ? "false" : "true");
   filterMessage.innerHTML = showError ? message : "";
