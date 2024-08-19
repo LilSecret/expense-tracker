@@ -86,7 +86,7 @@ newExpenseForm.addEventListener("submit", (e) => {
   const type = expenseFormType.value;
   const description = expenseFormDescription.value;
   const amount = Number(expenseFormAmount.value);
-  const date = new Date("08/21").toLocaleDateString("en-US", {
+  const date = new Date().toLocaleDateString("en-US", {
     day: "numeric",
     month: "2-digit",
   });

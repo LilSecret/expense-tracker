@@ -155,6 +155,7 @@ const handleFilterSubmit = (e) => {
     ].sort();
 
     filterForm.setAttribute("data-filter", "true");
+    filterForm.reset();
     // FILTERS TRANSACTIONS
     addFilteredTransactionsInList("income-list", filteredIncomeTransactions);
     addFilteredTransactionsInList("expense-list", filteredExpenseTransactions);
