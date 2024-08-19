@@ -86,11 +86,11 @@ newExpenseForm.addEventListener("submit", (e) => {
   const type = expenseFormType.value;
   const description = expenseFormDescription.value;
   const amount = Number(expenseFormAmount.value);
-  const month = new Date().getMonth() + 1;
-  const day = new Date().getDate();
+  const date = new Date("08/21").toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "2-digit",
+  });
   const id = Math.random().toString(16).slice(2, 10);
-  // const year = new Date().getFullYear().toString().slice(-2);
-  const date = `${month}/${day}`;
 
   const transaction = {
     id,
@@ -108,6 +108,7 @@ newExpenseForm.addEventListener("submit", (e) => {
 
   saveNewTransactionItem(type, transaction);
   deployItemInTransactionList(type, transaction);
+  loadDatesIntoFilters();
   addTransactionToChart(type, transaction);
   balanceTotal.innerHTML = getBalanceTotal();
   resetFormValues();
@@ -124,3 +125,6 @@ expenseFormAmount.addEventListener("beforeinput", function (e) {
   }
   return;
 });
+
+filterForm.addEventListener("submit", handleFilterSubmit);
+filterResetBtn.addEventListener("click", handleFilterReset);
