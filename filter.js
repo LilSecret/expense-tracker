@@ -152,6 +152,16 @@ const handleFilterSubmit = (e) => {
       ...new Set(filteredExpenseDates.concat(filteredIncomeDates)),
     ].sort();
 
+    const filteredIncomeTotal = incomeChartData.find(
+      (graphPoint) => graphPoint.date === toDate
+    ).amount;
+    const filteredExpenseTotal = expenseChartData.find(
+      (graphPoint) => graphPoint.date === toDate
+    ).amount;
+
+    expenseListTotal.innerHTML = filteredExpenseTotal;
+    incomeListTotal.innerHTML = filteredIncomeTotal;
+
     filterForm.setAttribute("data-filter", "true");
     filterForm.reset();
     // FILTERS TRANSACTIONS
@@ -168,6 +178,8 @@ const handleFilterReset = () => {
 
   if (isFilterActive) {
     filterForm.setAttribute("data-filter", "false");
+    expenseListTotal.innerHTML = wallet.expenseTotal;
+    incomeListTotal.innerHTML = wallet.incomeTotal;
     addFilteredTransactionsInList("income-list", incomeTransactions);
     addFilteredTransactionsInList("expense-list", expenseTransactions);
     updateChartData();
